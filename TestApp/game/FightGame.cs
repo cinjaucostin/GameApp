@@ -8,6 +8,7 @@ using TestApp.factory;
 using TestApp.fighter;
 using TestApp.team;
 using TestApp.enums;
+using TestApp.visitor;
 
 namespace TestApp.game
 {
@@ -33,10 +34,16 @@ namespace TestApp.game
             get; set;
         }
 
-        public FightGame(Arena arena, FighterFactory fighterFactory)
+        public Doctor Doctor
+        {
+            get; set;
+        }
+
+        public FightGame(Arena arena, FighterFactory fighterFactory, Doctor doctor)
         {
             Arena = arena;
             FighterFactory = fighterFactory;
+            Doctor = doctor;
         }
 
         public Team configureTeam()
@@ -97,13 +104,12 @@ namespace TestApp.game
         {
             int firstTeamFighterNo, secondTeamFighterNo;
             Random rand = new Random();
-            Console.WriteLine("Urmeaza sa fie implementat.");
             while(FirstTeam.Fighters.Count > 0 && SecondTeam.Fighters.Count > 0)
             {
                 firstTeamFighterNo = rand.Next(FirstTeam.Fighters.Count);
                 secondTeamFighterNo = rand.Next(SecondTeam.Fighters.Count);
 
-                Arena.fight(FirstTeam.Fighters[firstTeamFighterNo], SecondTeam.Fighters[secondTeamFighterNo]);
+                Arena.fight(FirstTeam.Fighters[firstTeamFighterNo], SecondTeam.Fighters[secondTeamFighterNo], Doctor);
 
                 FirstTeam.updateTeam();
                 SecondTeam.updateTeam();
@@ -111,9 +117,23 @@ namespace TestApp.game
             }
 
             if (FirstTeam.Fighters.Count == 0)
+            {
                 Console.WriteLine("Team " + SecondTeam.Name + " has won the game.");
+                Console.WriteLine("Fighters alive:");
+                foreach (Fighter fighter in SecondTeam.Fighters)
+                {
+                    Console.WriteLine("Fighter: " + fighter.GetType().Name + " with " + fighter.Health + " HP.");
+                }
+            }
             else if (SecondTeam.Fighters.Count == 0)
+            {
                 Console.WriteLine("Team " + FirstTeam.Name + " has won the game.");
+                Console.WriteLine("Fighters alive:");
+                foreach (Fighter fighter in FirstTeam.Fighters)
+                {
+                    Console.WriteLine("Fighter: " + fighter.GetType().Name + " with " + fighter.Health + " HP.");
+                }
+            }
             else
                 Console.WriteLine("Something went wrong.");
 

@@ -7,34 +7,40 @@ using TestApp.factory;
 using TestApp.fighter;
 using TestApp.team;
 using TestApp.enums;
+using System.ComponentModel;
+using TestApp.visitor;
 
 namespace TestApp.arena
 {
     public class Arena
     {
-        public void fight(Fighter fighter1, Fighter fighter2)
+        public void fight(Fighter fighter1, Fighter fighter2, IVisitor doctor)
         {
-            int fighter1HitDamage = fighter1.hitDamage();
-            fighter2.Health -= fighter1HitDamage;
-            Console.WriteLine("Fighter " + fighter1.GetType().Name + " from team " + fighter1.Team + " hits with " +
-                fighter1HitDamage + " dmg on Fighter " + fighter2.GetType().Name + " from team " + fighter2.Team);
-            if (fighter2.Health <= 0)
+            int fighter1HitDamage, fighter2HitDamage;
+            Console.WriteLine("---------------------------------------------------");
+            Console.WriteLine(fighter1.GetType().Name + " from team " + fighter1.Team +
+                " VS " + fighter2.GetType().Name + " from team " + fighter2.Team);
+
+            while(fighter1.Status == Status.ALIVE && fighter2.Status == Status.ALIVE)
             {
-                fighter2.Status = Status.DEAD;
-                Console.WriteLine("Fighter " + fighter2.GetType().Name + "from Team " + fighter2.Team + " dies.");
-                return;
+
+                if (fighter2.Status == Status.ALIVE)
+                {
+                    fighter2HitDamage = fighter2.hitDamage();
+                    fighter1.getHit(fighter2, fighter2HitDamage);
+                    fighter1.accept(doctor);
+                }
+
+                if (fighter1.Status == Status.ALIVE)
+                {
+                    fighter1HitDamage = fighter1.hitDamage();
+                    fighter2.getHit(fighter1, fighter1HitDamage);
+                    fighter2.accept(doctor);
+                }
+
             }
 
-            int fighter2HitDamage = fighter2.hitDamage();
-            fighter1.Health -= fighter2HitDamage;
-            Console.WriteLine("Fighter " + fighter2.GetType().Name + " from team " + fighter2.Team + " hits with " +
-                fighter2HitDamage + " dmg on Fighter " + fighter1.GetType().Name + " from team " + fighter1.Team);
-
-            if (fighter1.Health <= 0)
-            {
-                fighter1.Status = Status.DEAD;
-                Console.WriteLine("Fighter " + fighter1.GetType().Name + "from Team " + fighter1.Team + " dies.");
-            }
+            Console.WriteLine("---------------------------------------------------");
 
         }
     }
