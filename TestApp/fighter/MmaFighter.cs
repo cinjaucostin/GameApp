@@ -9,11 +9,11 @@ namespace TestApp.fighter
 {
     public class MmaFighter : Fighter
     {
-        public MmaFighter(string team) : base(team)
+        public MmaFighter(string team, double criticalChance, double criticalDamageBonus,
+            double dodgeHitChance, double agility, double healFactor, double minDamage, double maxDamage)
+            : base(team, criticalChance, criticalDamageBonus, dodgeHitChance, agility, healFactor,
+                    minDamage, maxDamage)
         {
-            this.CriticalChance = 30;
-            this.CriticalDamageBonus = 0.15;
-            this.DodgeHitChance = 0.2;
         }
 
         public override void accept(IVisitor visitor)
@@ -23,14 +23,13 @@ namespace TestApp.fighter
 
         public override int hitDamage()
         {
-            Random rand = new Random();
-            int damage = rand.Next(35, 40);
-            if(rand.NextDouble() < CriticalChance)
+            int damage = Fortune.Next(MinDamage, MaxDamage);
+            if(Fortune.NextDouble() < CriticalChance)
             {
                 damage += (int)(CriticalDamageBonus * damage);
                 Console.WriteLine("Critical damage bonus of "
                    + (int)(CriticalDamageBonus * damage)
-                   + " DMG for Fighter " + this.GetType().Name
+                   + " DMG for " + this.GetType().Name
                    + " from Team " + this.Team);
             }
             return damage;

@@ -9,6 +9,7 @@ using TestApp.fighter;
 using TestApp.team;
 using TestApp.enums;
 using TestApp.visitor;
+using TestApp.common;
 
 namespace TestApp.game
 {
@@ -70,15 +71,18 @@ namespace TestApp.game
                 switch (fighterType)
                 {
                     case 1:
-                        team.addFighter(FighterFactory.createFighter(team.Name, "BOX_FIGHTER"));
+                        team.addFighter(FighterFactory.createFighter(team.Name, Utils.BOX_FIGHTER));
+                        Console.WriteLine("Box Fighter has been added to team " + team.Name);
                         i++;
                         break;
                     case 2:
-                        team.addFighter(FighterFactory.createFighter(team.Name, "MMA_FIGHTER"));
+                        team.addFighter(FighterFactory.createFighter(team.Name, Utils.MMA_FIGHTER));
+                        Console.WriteLine("MMA Fighter has been added to team " + team.Name);
                         i++;
                         break;
                     case 3:
-                        team.addFighter(FighterFactory.createFighter(team.Name, "COMPLEX_FIGHTER"));
+                        team.addFighter(FighterFactory.createFighter(team.Name, Utils.COMPLEX_FIGHTER));
+                        Console.WriteLine("Complex Fighter has been added to team " + team.Name);
                         i++;
                         break;
                     default:
@@ -90,13 +94,15 @@ namespace TestApp.game
 
         public void setup()
         {
-            Console.WriteLine("----- GAME SETUP -----");
+            Console.WriteLine("------------------------------------------ GAME SETUP ------------------------------------------");
 
-            Console.WriteLine("Configure the first team:");
+            Console.WriteLine("--------------- Configure the first team: ---------------");
             FirstTeam = configureTeam();
+            Console.WriteLine("-------------------------------------------------");
 
-            Console.WriteLine("Configure the second team:");
+            Console.WriteLine("--------------- Configure the second team: ---------------");
             SecondTeam = configureTeam();
+            Console.WriteLine("-------------------------------------------------");
 
         }
 
@@ -116,26 +122,7 @@ namespace TestApp.game
 
             }
 
-            if (FirstTeam.Fighters.Count == 0)
-            {
-                Console.WriteLine("Team " + SecondTeam.Name + " has won the game.");
-                Console.WriteLine("Fighters alive:");
-                foreach (Fighter fighter in SecondTeam.Fighters)
-                {
-                    Console.WriteLine("Fighter: " + fighter.GetType().Name + " with " + fighter.Health + " HP.");
-                }
-            }
-            else if (SecondTeam.Fighters.Count == 0)
-            {
-                Console.WriteLine("Team " + FirstTeam.Name + " has won the game.");
-                Console.WriteLine("Fighters alive:");
-                foreach (Fighter fighter in FirstTeam.Fighters)
-                {
-                    Console.WriteLine("Fighter: " + fighter.GetType().Name + " with " + fighter.Health + " HP.");
-                }
-            }
-            else
-                Console.WriteLine("Something went wrong.");
+            Arena.checkTeams(FirstTeam, SecondTeam);
 
         }
     }

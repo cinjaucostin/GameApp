@@ -27,21 +27,54 @@ namespace TestApp.fighter
         {
             get; set;
         }
+        public double CriticalDamageBonus
+        {
+            get; set;
+        }
         public double DodgeHitChance
         {
             get; set;
         }
 
-        public double CriticalDamageBonus
+        public double Agility
         {
             get; set;
         }
 
-        public Fighter(string team)
+        public double HealFactor
+        {
+            get; set;
+        }
+
+        public int MinDamage
+        {
+            get; set;
+        }
+        public int MaxDamage
+        {
+            get; set;
+        }
+
+        public Random Fortune
+        {
+            get; set;
+        }
+
+        public Fighter(string team, double criticalChance, double criticalDamageBonus, 
+            double dodgeHitChance, double agility, double healFactor, double minDamage,
+            double maxDamage)
         {
             Health = 100;
             Team = team;
             Status = Status.ALIVE;
+            CriticalChance = criticalChance;
+            CriticalDamageBonus = criticalDamageBonus;
+            DodgeHitChance = dodgeHitChance;
+            Agility = agility;
+            HealFactor = healFactor;
+            MinDamage = (int)minDamage;
+            MaxDamage = (int)maxDamage;
+            Fortune = new Random();
         }
 
         public abstract int hitDamage();
@@ -49,19 +82,18 @@ namespace TestApp.fighter
 
         public void getHit(Fighter adverseFighter, int damage)
         {
-            Random random = new Random();
-
-            if (random.NextDouble() < DodgeHitChance)
+            
+            if (Fortune.NextDouble() < DodgeHitChance)
             {
-                Console.WriteLine("Fighter " + this.GetType().Name + " dodged the hit from Fighter "
+                Console.WriteLine(this.GetType().Name + " dodged the hit from "
                     + adverseFighter.GetType().Name);
                 return;
             }
 
             this.Health -= damage;
 
-            Console.WriteLine("Fighter " + adverseFighter.GetType().Name + " from team " + adverseFighter.Team + " hits with " +
-                    damage + " dmg on Fighter " + this.GetType().Name + " from team " + this.Team);
+            Console.WriteLine(adverseFighter.GetType().Name + " from team " + adverseFighter.Team + " hits with " +
+                    damage + " dmg on " + this.GetType().Name + " from team " + this.Team);
 
         }
 

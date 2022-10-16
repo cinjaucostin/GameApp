@@ -7,12 +7,11 @@ using TestApp.visitor;
 
 namespace TestApp.fighter
 {
-    public class ComplexFighter : Fighter
+    public class TestFighter : Fighter
     {
-        public ComplexFighter(string team, double criticalChance, double criticalDamageBonus,
-            double dodgeHitChance, double agility, double healFactor, double minDamage, double maxDamage)
-            : base(team, criticalChance, criticalDamageBonus, dodgeHitChance, agility, healFactor,
-                    minDamage, maxDamage)
+        public TestFighter(string team, double criticalChance, double criticalDamageBonus, double dodgeHitChance, 
+            double agility, double healFactor, double minDamage, double maxDamage) : 
+            base(team, criticalChance, criticalDamageBonus, dodgeHitChance, agility, healFactor, minDamage, maxDamage)
         {
         }
 
@@ -34,6 +33,5 @@ namespace TestApp.fighter
             }
             return damage;
         }
-
     }
 }

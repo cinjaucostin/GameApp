@@ -12,5 +12,6 @@ namespace TestApp.visitor
         void Visit(BoxFighter boxFighter);
         void Visit(MmaFighter mmaFighter);
         void Visit(ComplexFighter complexFighter);
+        void Visit(TestFighter complexFighter);
     }
 }

@@ -10,11 +10,11 @@ namespace TestApp.fighter
 {
     public class BoxFighter : Fighter
     {
-        public BoxFighter(string team) : base(team)
+        public BoxFighter(string team, double criticalChance, double criticalDamageBonus, 
+            double dodgeHitChance, double agility, double healFactor, double minDamage, double maxDamage) 
+            : base(team, criticalChance, criticalDamageBonus, dodgeHitChance, agility, healFactor,
+                    minDamage, maxDamage)
         {
-            this.CriticalChance = 0.35;
-            this.CriticalDamageBonus = 0.15;
-            this.DodgeHitChance = 0.25;
         }
 
         public override void accept(IVisitor visitor)
@@ -24,14 +24,13 @@ namespace TestApp.fighter
 
         public override int hitDamage()
         {
-            Random rand = new Random();
-            int damage = rand.Next(30, 45);
-            if (rand.NextDouble() < CriticalChance)
+            int damage = Fortune.Next(MinDamage, MaxDamage);
+            if (Fortune.NextDouble() < CriticalChance)
             {
                 damage += (int)(CriticalDamageBonus * damage);
                 Console.WriteLine("Critical damage bonus of "
                     + (int)(CriticalDamageBonus * damage)
-                    + " DMG for Fighter " + this.GetType().Name
+                    + " DMG for " + this.GetType().Name
                     + " from Team " + this.Team);
             }
             return damage;

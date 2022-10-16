@@ -1,8 +1,11 @@
-﻿using TestApp.arena;
+﻿using System.Diagnostics;
+using TestApp.arena;
+using TestApp.common;
 using TestApp.factory;
 using TestApp.fighter;
 using TestApp.game;
 using TestApp.visitor;
+using TestApp.common;
 
 namespace TestApp
 {
@@ -10,21 +13,25 @@ namespace TestApp
     {
         static void Main(string[] args)
         {
+
+            AppDomain.CurrentDomain.FirstChanceException += (sender, eventArgs) =>
+            {
+                Debug.WriteLine(eventArgs.Exception.ToString());
+            };
+
             Arena arena = new Arena();
-            FighterFactory fighterFactory = new FighterFactory();
+            Dictionary<string, Dictionary<string, double>> properties = 
+                Helpers.loadCharactersProperties(Utils.FIGHTERS_PROPERTIES_FILE);
+            FighterFactory fighterFactory = new FighterFactory(properties);
             Doctor doctor = new Doctor();
 
-            Game game = new FightGame(arena, fighterFactory, doctor);
-            game.setup();
-            game.simulate();
+            //Game game = new FightGame(arena, fighterFactory, doctor);
+            //game.setup();
+            //game.simulate();
 
-            
-            // Fighter floyd_mayweather = new BoxFighter("BOX_TEAM");
-            // Fighter connor_mcgregor = new MmaFighter("MMA_TEAM");
-            // rena.fight(floyd_mayweather, connor_mcgregor, doctor);
 
-            // Console.WriteLine("HP: " + floyd_mayweather.Health);
-           //  Console.WriteLine("HP: " + connor_mcgregor.Health);
+            Helpers helpers = new Helpers();
+            helpers.Fight_ShouldBeBalanced();
 
         }
     }
