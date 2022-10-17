@@ -6,6 +6,7 @@ using TestApp.fighter;
 using TestApp.game;
 using TestApp.visitor;
 using TestApp.common;
+using TestApp.notifier;
 
 namespace TestApp
 {
@@ -19,19 +20,19 @@ namespace TestApp
                 Debug.WriteLine(eventArgs.Exception.ToString());
             };
 
-            Arena arena = new Arena();
+            Notifier notifier = new Notifier();
+            Arena arena = new Arena(notifier);
             Dictionary<string, Dictionary<string, double>> properties = 
                 Helpers.loadCharactersProperties(Utils.FIGHTERS_PROPERTIES_FILE);
-            FighterFactory fighterFactory = new FighterFactory(properties);
-            Doctor doctor = new Doctor();
+            FighterFactory fighterFactory = new FighterFactory(properties, notifier);
+            Doctor doctor = new Doctor(notifier);
 
-            //Game game = new FightGame(arena, fighterFactory, doctor);
-            //game.setup();
-            //game.simulate();
+           
 
 
-            Helpers helpers = new Helpers();
-            helpers.Fight_ShouldBeBalanced();
+            Game game = new FightGame(arena, fighterFactory, doctor);
+            game.setup();
+            game.simulate();
 
         }
     }

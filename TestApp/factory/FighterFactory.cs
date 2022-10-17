@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using TestApp.common;
 using TestApp.fighter;
+using TestApp.notifier;
 
 namespace TestApp.factory
 {
@@ -15,13 +16,20 @@ namespace TestApp.factory
             get; set;
         }
 
+        public Notifier Notifier
+        {
+            get; set;
+        }
+
         public FighterFactory()
         {
 
         }
 
-        public FighterFactory(Dictionary<string, Dictionary<string, double>> properties)
+        public FighterFactory(Dictionary<string, Dictionary<string, double>> properties, 
+            Notifier notifier)
         {
+            Notifier = notifier;
             Properties = properties;
         }
 
@@ -37,7 +45,8 @@ namespace TestApp.factory
                         Properties[type][Utils.AGILITY],
                         Properties[type][Utils.HEAL],
                          Properties[type][Utils.MIN_DAMAGE],
-                         Properties[type][Utils.MAX_DAMAGE]);
+                         Properties[type][Utils.MAX_DAMAGE],
+                         this.Notifier);
                 case Utils.MMA_FIGHTER:
                     return new MmaFighter(team,
                          Properties[type][Utils.CRITICAL_CHANCE],
@@ -46,7 +55,8 @@ namespace TestApp.factory
                          Properties[type][Utils.AGILITY],
                          Properties[type][Utils.HEAL],
                          Properties[type][Utils.MIN_DAMAGE],
-                         Properties[type][Utils.MAX_DAMAGE]);
+                         Properties[type][Utils.MAX_DAMAGE],
+                         this.Notifier);
                 case Utils.COMPLEX_FIGHTER:
                     return new ComplexFighter(team,
                          Properties[type][Utils.CRITICAL_CHANCE],
@@ -55,7 +65,8 @@ namespace TestApp.factory
                          Properties[type][Utils.AGILITY],
                          Properties[type][Utils.HEAL],
                          Properties[type][Utils.MIN_DAMAGE],
-                         Properties[type][Utils.MAX_DAMAGE]);
+                         Properties[type][Utils.MAX_DAMAGE],
+                         this.Notifier);
                 case Utils.TEST_FIGHTER:
                     return new TestFighter(team,
                          Properties[type][Utils.CRITICAL_CHANCE],
@@ -64,7 +75,8 @@ namespace TestApp.factory
                          Properties[type][Utils.AGILITY],
                          Properties[type][Utils.HEAL],
                          Properties[type][Utils.MIN_DAMAGE],
-                         Properties[type][Utils.MAX_DAMAGE]);
+                         Properties[type][Utils.MAX_DAMAGE],
+                         this.Notifier);
                 default: throw new ArgumentException("Invalid argument for function createFighter.\n");
             }
         }

@@ -9,11 +9,20 @@ using TestApp.team;
 using TestApp.enums;
 using System.ComponentModel;
 using TestApp.visitor;
+using TestApp.notifier;
 
 namespace TestApp.arena
 {
     public class Arena
     {
+
+        public event EventHandler<CustomEventArgs> TeamWon;
+
+        public Arena(Notifier notifier)
+        {
+            this.TeamWon += notifier.OnTeamWon;
+        }
+
         public int whoHitsThisTime(Fighter fighter1, Fighter fighter2)
         {
             Random random = new Random();
@@ -35,21 +44,11 @@ namespace TestApp.arena
         {
             if (firstTeam.Fighters.Count == 0)
             {
-                Console.WriteLine("Team " + secondTeam.Name + " has won the game.");
-                Console.WriteLine("Fighters alive:");
-                foreach (Fighter fighter in secondTeam.Fighters)
-                {
-                    Console.WriteLine("Fighter: " + fighter.GetType().Name + " with " + fighter.Health + " HP.");
-                }
+                OnTeamWon(secondTeam);
             }
             else if (secondTeam.Fighters.Count == 0)
             {
-                Console.WriteLine("Team " + firstTeam.Name + " has won the game.");
-                Console.WriteLine("Fighters alive:");
-                foreach (Fighter fighter in firstTeam.Fighters)
-                {
-                    Console.WriteLine("Fighter: " + fighter.GetType().Name + " with " + fighter.Health + " HP.");
-                }
+                OnTeamWon(firstTeam);
             }
             else
             {
@@ -97,6 +96,14 @@ namespace TestApp.arena
 
             Console.WriteLine("---------------------------------------------------");
 
+        }
+
+        protected virtual void OnTeamWon(Team team)
+        {
+            if(TeamWon != null)
+            {
+                TeamWon(this, new CustomEventArgs(team));
+            }
         }
     }
 }

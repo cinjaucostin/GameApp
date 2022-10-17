@@ -4,12 +4,20 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TestApp.enums;
+using TestApp.notifier;
 using TestApp.visitor;
 
 namespace TestApp.fighter
 {
     public abstract class Fighter
     {
+
+        public event EventHandler<CustomEventArgs> PunchedByAdverseFighter;
+
+        public event EventHandler<CustomEventArgs> DodgedAdverseFighterHit;
+
+        public event EventHandler<CustomEventArgs> CriticalDamageHit;
+
         public int Health
         {
             get; set;
@@ -62,7 +70,7 @@ namespace TestApp.fighter
 
         public Fighter(string team, double criticalChance, double criticalDamageBonus, 
             double dodgeHitChance, double agility, double healFactor, double minDamage,
-            double maxDamage)
+            double maxDamage, Notifier notifier)
         {
             Health = 100;
             Team = team;
@@ -75,6 +83,10 @@ namespace TestApp.fighter
             MinDamage = (int)minDamage;
             MaxDamage = (int)maxDamage;
             Fortune = new Random();
+            this.PunchedByAdverseFighter += notifier.OnPunchedByAdverseFighter;
+            this.CriticalDamageHit += notifier.OnCriticalDamageHit;
+            this.DodgedAdverseFighterHit += notifier.OnDodgedAdverseFighterHit;
+
         }
 
         public abstract int hitDamage();
@@ -85,21 +97,42 @@ namespace TestApp.fighter
             
             if (Fortune.NextDouble() < DodgeHitChance)
             {
-                Console.WriteLine(this.GetType().Name + " dodged the hit from "
-                    + adverseFighter.GetType().Name);
+                OnDodgedAdverseFighterHit(adverseFighter);
                 return;
             }
 
             this.Health -= damage;
 
-            Console.WriteLine(adverseFighter.GetType().Name + " from team " + adverseFighter.Team + " hits with " +
-                    damage + " dmg on " + this.GetType().Name + " from team " + this.Team);
+            OnPunchedByAdverseFighter(adverseFighter, damage);
 
         }
 
-        public override string ToString()
+        protected virtual void OnPunchedByAdverseFighter(Fighter adverseFighter, int damage)
         {
-            return "Player " + GetType().Name;
+            if(PunchedByAdverseFighter != null)
+            {
+                PunchedByAdverseFighter(this, 
+                    new CustomEventArgs(adverseFighter, damage));
+            }
         }
+
+        protected virtual void OnDodgedAdverseFighterHit(Fighter adverseFighter)
+        {
+            if(DodgedAdverseFighterHit != null)
+            {
+                DodgedAdverseFighterHit(this, 
+                    new CustomEventArgs(adverseFighter));
+            }
+        }
+
+        protected virtual void OnCriticalDamageHit(int criticalDamage)
+        {
+            if (CriticalDamageHit != null)
+            {
+                CriticalDamageHit(this, 
+                    new CustomEventArgs(criticalDamage));
+            }
+        }
+
     }
 }

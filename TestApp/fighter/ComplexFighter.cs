@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TestApp.notifier;
 using TestApp.visitor;
 
 namespace TestApp.fighter
@@ -10,9 +11,10 @@ namespace TestApp.fighter
     public class ComplexFighter : Fighter
     {
         public ComplexFighter(string team, double criticalChance, double criticalDamageBonus,
-            double dodgeHitChance, double agility, double healFactor, double minDamage, double maxDamage)
+            double dodgeHitChance, double agility, double healFactor, double minDamage, 
+            double maxDamage, Notifier notifier)
             : base(team, criticalChance, criticalDamageBonus, dodgeHitChance, agility, healFactor,
-                    minDamage, maxDamage)
+                    minDamage, maxDamage, notifier)
         {
         }
 
@@ -27,10 +29,7 @@ namespace TestApp.fighter
             if (Fortune.NextDouble() < CriticalChance)
             {
                 damage += (int)(CriticalDamageBonus * damage);
-                Console.WriteLine("Critical damage bonus of "
-                   + (int)(CriticalDamageBonus * damage)
-                   + " DMG for " + this.GetType().Name
-                   + " from Team " + this.Team);
+                OnCriticalDamageHit((int)(CriticalDamageBonus * damage));
             }
             return damage;
         }
