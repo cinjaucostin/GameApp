@@ -97,7 +97,6 @@ namespace TestApp.arena
             Console.WriteLine("---------------------------------------------------");
 
         }
-
         protected virtual void OnTeamWon(Team team)
         {
             if(TeamWon != null)

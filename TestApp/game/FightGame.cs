@@ -66,27 +66,36 @@ namespace TestApp.game
 
             while (i < numberOfFighters)
             {
-                Console.WriteLine("Please select your option for fighter no. " + i);
+                Console.WriteLine("Please select your option for fighter no. " + (i + 1));
                 fighterType = Convert.ToInt32(Console.ReadLine());
-                switch (fighterType)
+
+                try
                 {
-                    case 1:
-                        team.addFighter(FighterFactory.createFighter(team.Name, Utils.BOX_FIGHTER));
-                        Console.WriteLine("Box Fighter has been added to team " + team.Name);
-                        i++;
-                        break;
-                    case 2:
-                        team.addFighter(FighterFactory.createFighter(team.Name, Utils.MMA_FIGHTER));
-                        Console.WriteLine("MMA Fighter has been added to team " + team.Name);
-                        i++;
-                        break;
-                    case 3:
-                        team.addFighter(FighterFactory.createFighter(team.Name, Utils.COMPLEX_FIGHTER));
-                        Console.WriteLine("Complex Fighter has been added to team " + team.Name);
-                        i++;
-                        break;
-                    default:
-                        continue;
+                    switch (fighterType)
+                    {
+                        case 1:
+                            team.addFighter(FighterFactory.createFighter(team.Name, Utils.BOX_FIGHTER));
+                            Console.WriteLine("Box Fighter has been added to team " + team.Name);
+                            i++;
+                            break;
+                        case 2:
+                            team.addFighter(FighterFactory.createFighter(team.Name, Utils.MMA_FIGHTER));
+                            Console.WriteLine("MMA Fighter has been added to team " + team.Name);
+                            i++;
+                            break;
+                        case 3:
+                            team.addFighter(FighterFactory.createFighter(team.Name, Utils.COMPLEX_FIGHTER));
+                            Console.WriteLine("Complex Fighter has been added to team " + team.Name);
+                            i++;
+                            break;
+                        default:
+                            continue;
+                    }
+                }
+                catch (ArgumentException e)
+                {
+                    Console.WriteLine("Invalid option, please choose one more time...");
+                    continue;
                 }
             }
             return team;

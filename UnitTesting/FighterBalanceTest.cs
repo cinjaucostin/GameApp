@@ -3,6 +3,7 @@ using TestApp.common;
 using TestApp.enums;
 using TestApp.factory;
 using TestApp.fighter;
+using TestApp.notifier;
 using TestApp.visitor;
 using Xunit;
 
@@ -13,11 +14,12 @@ namespace UnitTesting
         [Fact]
         public void Fight_MmaFighterShouldBeBalanced()
         {
-            Arena arena = new Arena();
+            Notifier notifier = new Notifier();
+            Arena arena = new Arena(notifier);
             Dictionary<string, Dictionary<string, double>> properties =
                 Helpers.loadCharactersProperties(Utils.FIGHTERS_PROPERTIES_FILE);
-            FighterFactory fighterFactory = new FighterFactory(properties);
-            Doctor doctor = new Doctor();
+            FighterFactory fighterFactory = new FighterFactory(properties, notifier);
+            Doctor doctor = new Doctor(notifier);
 
             Fighter testedFighter = fighterFactory.createFighter("Tested Team", Utils.MMA_FIGHTER);
             Fighter testFighter = fighterFactory.createFighter("Test Team", Utils.TEST_FIGHTER);
@@ -52,11 +54,12 @@ namespace UnitTesting
         [Fact]
         public void Fight_BoxFighterShouldBeBalanced()
         {
-            Arena arena = new Arena();
+            Notifier notifier = new Notifier();
+            Arena arena = new Arena(notifier);
             Dictionary<string, Dictionary<string, double>> properties =
                 Helpers.loadCharactersProperties(Utils.FIGHTERS_PROPERTIES_FILE);
-            FighterFactory fighterFactory = new FighterFactory(properties);
-            Doctor doctor = new Doctor();
+            FighterFactory fighterFactory = new FighterFactory(properties, notifier);
+            Doctor doctor = new Doctor(notifier);
 
             Fighter testedFighter = fighterFactory.createFighter("Tested Team", Utils.BOX_FIGHTER);
             Fighter testFighter = fighterFactory.createFighter("Test Team", Utils.TEST_FIGHTER);
@@ -91,11 +94,12 @@ namespace UnitTesting
         [Fact]
         public void Fight_ComplexFighterShouldBeBalanced()
         {
-            Arena arena = new Arena();
+            Notifier notifier = new Notifier();
+            Arena arena = new Arena(notifier);
             Dictionary<string, Dictionary<string, double>> properties =
                 Helpers.loadCharactersProperties(Utils.FIGHTERS_PROPERTIES_FILE);
-            FighterFactory fighterFactory = new FighterFactory(properties);
-            Doctor doctor = new Doctor();
+            FighterFactory fighterFactory = new FighterFactory(properties, notifier);
+            Doctor doctor = new Doctor(notifier);
 
             Fighter testedFighter = fighterFactory.createFighter("Tested Team", Utils.COMPLEX_FIGHTER);
             Fighter testFighter = fighterFactory.createFighter("Test Team", Utils.TEST_FIGHTER);

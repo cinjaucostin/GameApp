@@ -21,68 +21,22 @@ namespace TestApp.visitor
             this.FighterHealed += notifier.OnFighterHealed;
         }
 
-        public void Visit(BoxFighter boxFighter)
+        public void Visit(Fighter fighter)
         {
-            if(boxFighter.Health <= 0)
+            if (fighter.Health <= 0)
             {
-                boxFighter.Status = Status.DEAD;
-                OnFighterDied(boxFighter);
+                fighter.Status = Status.DEAD;
+                OnFighterDied(fighter);
                 return;
             }
-            if(boxFighter.Health < 100)
+            if (fighter.Health < 100)
             {
-                double heal = boxFighter.HealFactor * boxFighter.Health;
-                boxFighter.Health += (int)heal;
-                OnFighterHealed(boxFighter, (int)heal);
-            }
-        }
-
-        public void Visit(MmaFighter mmaFighter)
-        {
-            if (mmaFighter.Health <= 0)
-            {
-                mmaFighter.Status = Status.DEAD;
-                OnFighterDied(mmaFighter);
-                return;
-            }
-            if(mmaFighter.Health < 100)
-            {
-                double heal = mmaFighter.HealFactor * mmaFighter.Health;
-                mmaFighter.Health += (int)heal;
-                OnFighterHealed(mmaFighter, (int)heal);
-            }
-
-        }
-
-        public void Visit(ComplexFighter complexFighter)
-        {
-            if (complexFighter.Health <= 0)
-            {
-                complexFighter.Status = Status.DEAD;
-                OnFighterDied(complexFighter);
-                return;
-            }
-            if (complexFighter.Health < 100)
-            {
-                double heal = complexFighter.HealFactor * complexFighter.Health;
-                complexFighter.Health += (int)heal;
-                OnFighterHealed(complexFighter, (int)heal);
-            }
-        }
-
-        public void Visit(TestFighter testFighter)
-        {
-            if (testFighter.Health <= 0)
-            {
-                testFighter.Status = Status.DEAD;
-                OnFighterDied(testFighter);
-                return;
-            }
-            if (testFighter.Health < 100)
-            {
-                double heal = testFighter.HealFactor * testFighter.Health;
-                testFighter.Health += (int)heal;
-                OnFighterHealed(testFighter, (int)heal);
+                double heal = fighter.HealFactor * fighter.Health;
+                if ((int)heal > 0)
+                {
+                    fighter.Health += (int)heal;
+                    OnFighterHealed(fighter, (int)heal);
+                }
             }
         }
 
@@ -103,6 +57,5 @@ namespace TestApp.visitor
                 FighterHealed(this, customEventArgs);
             }
         }
-
     }
 }

@@ -9,9 +9,6 @@ namespace TestApp.visitor
 {
     public interface IVisitor
     {
-        void Visit(BoxFighter boxFighter);
-        void Visit(MmaFighter mmaFighter);
-        void Visit(ComplexFighter complexFighter);
-        void Visit(TestFighter complexFighter);
+        void Visit(Fighter fighter);
     }
 }

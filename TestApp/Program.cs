@@ -27,9 +27,6 @@ namespace TestApp
             FighterFactory fighterFactory = new FighterFactory(properties, notifier);
             Doctor doctor = new Doctor(notifier);
 
-           
-
-
             Game game = new FightGame(arena, fighterFactory, doctor);
             game.setup();
             game.simulate();
