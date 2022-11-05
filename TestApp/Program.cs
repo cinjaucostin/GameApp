@@ -23,13 +23,13 @@ namespace TestApp
             Notifier notifier = new Notifier();
             Arena arena = new Arena(notifier);
             Dictionary<string, Dictionary<string, double>> properties = 
-                Helpers.loadCharactersProperties(Utils.FIGHTERS_PROPERTIES_FILE);
+                Helpers.LoadCharactersProperties(Utils.FIGHTERS_PROPERTIES_FILE);
             FighterFactory fighterFactory = new FighterFactory(properties, notifier);
             Doctor doctor = new Doctor(notifier);
 
-            Game game = new FightGame(arena, fighterFactory, doctor);
-            game.setup();
-            game.simulate();
+            IGame game = new FightGame(arena, fighterFactory, doctor);
+            game.Setup();
+            game.Simulate();
 
         }
     }

@@ -21,16 +21,14 @@ namespace TestApp.factory
             get; set;
         }
 
-        public FighterFactory()
-        {
+        //constructor inutil 
 
-        }
 
         public FighterFactory(Dictionary<string, Dictionary<string, double>> properties, 
             Notifier notifier)
         {
-            Notifier = notifier;
-            Properties = properties;
+            Notifier = notifier ?? throw new ArgumentNullException(nameof(notifier));
+            Properties = properties ?? throw new ArgumentNullException(nameof(properties));
         }
 
         public Fighter createFighter(string team, string type)
@@ -46,7 +44,7 @@ namespace TestApp.factory
                         Properties[type][Utils.HEAL],
                          Properties[type][Utils.MIN_DAMAGE],
                          Properties[type][Utils.MAX_DAMAGE],
-                         this.Notifier);
+                         Notifier);
                 case Utils.MMA_FIGHTER:
                     return new MmaFighter(team,
                          Properties[type][Utils.CRITICAL_CHANCE],
@@ -56,7 +54,7 @@ namespace TestApp.factory
                          Properties[type][Utils.HEAL],
                          Properties[type][Utils.MIN_DAMAGE],
                          Properties[type][Utils.MAX_DAMAGE],
-                         this.Notifier);
+                         Notifier);
                 case Utils.COMPLEX_FIGHTER:
                     return new ComplexFighter(team,
                          Properties[type][Utils.CRITICAL_CHANCE],
@@ -66,7 +64,7 @@ namespace TestApp.factory
                          Properties[type][Utils.HEAL],
                          Properties[type][Utils.MIN_DAMAGE],
                          Properties[type][Utils.MAX_DAMAGE],
-                         this.Notifier);
+                         Notifier);
                 case Utils.TEST_FIGHTER:
                     return new TestFighter(team,
                          Properties[type][Utils.CRITICAL_CHANCE],
@@ -76,7 +74,7 @@ namespace TestApp.factory
                          Properties[type][Utils.HEAL],
                          Properties[type][Utils.MIN_DAMAGE],
                          Properties[type][Utils.MAX_DAMAGE],
-                         this.Notifier);
+                         Notifier);
                 default: throw new ArgumentException("Invalid argument for function createFighter.\n");
             }
         }

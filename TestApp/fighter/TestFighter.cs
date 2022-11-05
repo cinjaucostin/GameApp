@@ -17,12 +17,12 @@ namespace TestApp.fighter
         {
         }
 
-        public override void accept(IVisitor visitor)
+        public override void Accept(IDoctorVisitor visitor)
         {
             visitor.Visit(this);
         }
 
-        public override int hitDamage()
+        public override int HitDamage()
         {
             int damage = Fortune.Next(MinDamage, MaxDamage);
             if (Fortune.NextDouble() < CriticalChance)

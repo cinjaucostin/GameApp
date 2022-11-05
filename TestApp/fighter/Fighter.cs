@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using TestApp.enums;
+﻿using TestApp.enums;
 using TestApp.notifier;
 using TestApp.visitor;
 
@@ -72,6 +67,11 @@ namespace TestApp.fighter
             double dodgeHitChance, double agility, double healFactor, double minDamage,
             double maxDamage, Notifier notifier)
         {
+            if (notifier is null)
+            {
+                throw new ArgumentNullException(nameof(notifier));
+            }
+
             Health = 100;
             Team = team;
             Status = Status.ALIVE;
@@ -89,22 +89,22 @@ namespace TestApp.fighter
 
         }
 
-        public abstract int hitDamage();
-        public abstract void accept(IVisitor visitor);
+        public abstract int HitDamage();
+        public abstract void Accept(IDoctorVisitor doctor);
 
         public void getHit(Fighter adverseFighter, int damage)
         {
-            
+            if (adverseFighter is null)
+            {
+                throw new ArgumentNullException(nameof(adverseFighter));
+            }
             if (Fortune.NextDouble() < DodgeHitChance)
             {
                 OnDodgedAdverseFighterHit(adverseFighter);
                 return;
             }
-
-            this.Health -= damage;
-
+            Health -= damage;
             OnPunchedByAdverseFighter(adverseFighter, damage);
-
         }
 
         protected virtual void OnPunchedByAdverseFighter(Fighter adverseFighter, int damage)
@@ -133,6 +133,5 @@ namespace TestApp.fighter
                     new CustomEventArgs(criticalDamage));
             }
         }
-
     }
 }

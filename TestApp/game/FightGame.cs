@@ -1,19 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using TestApp.arena;
+﻿using TestApp.arena;
 using TestApp.factory;
-using TestApp.fighter;
 using TestApp.team;
-using TestApp.enums;
 using TestApp.visitor;
 using TestApp.common;
 
 namespace TestApp.game
 {
-    public class FightGame : Game
+    public class FightGame : IGame
     {
         public Team FirstTeam
         {
@@ -35,21 +28,24 @@ namespace TestApp.game
             get; set;
         }
 
-        public Doctor Doctor
+        // daca tot avem interfata o folosim pe ea
+        // reducem cuplajul dintre clase
+        public IDoctorVisitor Doctor
         {
             get; set;
         }
 
-        public FightGame(Arena arena, FighterFactory fighterFactory, Doctor doctor)
+        public FightGame(Arena arena, FighterFactory fighterFactory, IDoctorVisitor doctor)
         {
-            Arena = arena;
-            FighterFactory = fighterFactory;
-            Doctor = doctor;
+            //null checks pentru parametri
+            Arena = arena ?? throw new ArgumentNullException(nameof(arena));
+            FighterFactory = fighterFactory ?? throw new ArgumentNullException(nameof(fighterFactory));
+            Doctor = doctor ?? throw new ArgumentNullException(nameof(doctor));
         }
 
-        public Team configureTeam()
+        private Team ConfigureTeam()
         {
-            int i = 0, fighterType = 0;
+            int i = 0;
             Console.WriteLine("Please type the team name:");
 
             string teamName = Console.ReadLine();
@@ -57,6 +53,7 @@ namespace TestApp.game
             Team team = new Team(teamName);
 
             Console.WriteLine("Team number of fighters:");
+            //aici ar putea arunca o exceptie daca nu introduci un numar
             int numberOfFighters = Convert.ToInt32(Console.ReadLine());
 
             Console.WriteLine("There are the fighters:\n" +
@@ -67,24 +64,24 @@ namespace TestApp.game
             while (i < numberOfFighters)
             {
                 Console.WriteLine("Please select your option for fighter no. " + (i + 1));
-                fighterType = Convert.ToInt32(Console.ReadLine());
-
+                //aici ar putea arunca o exceptie daca nu introduci un numar
+                int fighterType = Convert.ToInt32(Console.ReadLine());
                 try
                 {
                     switch (fighterType)
                     {
                         case 1:
-                            team.addFighter(FighterFactory.createFighter(team.Name, Utils.BOX_FIGHTER));
+                            team.AddFighter(FighterFactory.createFighter(team.Name, Utils.BOX_FIGHTER));
                             Console.WriteLine("Box Fighter has been added to team " + team.Name);
                             i++;
                             break;
                         case 2:
-                            team.addFighter(FighterFactory.createFighter(team.Name, Utils.MMA_FIGHTER));
+                            team.AddFighter(FighterFactory.createFighter(team.Name, Utils.MMA_FIGHTER));
                             Console.WriteLine("MMA Fighter has been added to team " + team.Name);
                             i++;
                             break;
                         case 3:
-                            team.addFighter(FighterFactory.createFighter(team.Name, Utils.COMPLEX_FIGHTER));
+                            team.AddFighter(FighterFactory.createFighter(team.Name, Utils.COMPLEX_FIGHTER));
                             Console.WriteLine("Complex Fighter has been added to team " + team.Name);
                             i++;
                             break;
@@ -92,7 +89,7 @@ namespace TestApp.game
                             continue;
                     }
                 }
-                catch (ArgumentException e)
+                catch (ArgumentException)
                 {
                     Console.WriteLine("Invalid option, please choose one more time...");
                     continue;
@@ -101,21 +98,21 @@ namespace TestApp.game
             return team;
         }
 
-        public void setup()
+        public void Setup()
         {
             Console.WriteLine("------------------------------------------ GAME SETUP ------------------------------------------");
 
             Console.WriteLine("--------------- Configure the first team: ---------------");
-            FirstTeam = configureTeam();
+            FirstTeam = ConfigureTeam();
             Console.WriteLine("-------------------------------------------------");
 
             Console.WriteLine("--------------- Configure the second team: ---------------");
-            SecondTeam = configureTeam();
+            SecondTeam = ConfigureTeam();
             Console.WriteLine("-------------------------------------------------");
 
         }
 
-        public void simulate()
+        public void Simulate()
         {
             int firstTeamFighterNo, secondTeamFighterNo;
             Random rand = new Random();
@@ -124,14 +121,14 @@ namespace TestApp.game
                 firstTeamFighterNo = rand.Next(FirstTeam.Fighters.Count);
                 secondTeamFighterNo = rand.Next(SecondTeam.Fighters.Count);
 
-                Arena.fight(FirstTeam.Fighters[firstTeamFighterNo], SecondTeam.Fighters[secondTeamFighterNo], Doctor);
+                Arena.Fight(FirstTeam.Fighters[firstTeamFighterNo], SecondTeam.Fighters[secondTeamFighterNo], Doctor);
 
-                FirstTeam.updateTeam();
-                SecondTeam.updateTeam();
+                FirstTeam.UpdateTeam();
+                SecondTeam.UpdateTeam();
 
             }
 
-            Arena.checkTeams(FirstTeam, SecondTeam);
+            Arena.CheckTeams(FirstTeam, SecondTeam);
 
         }
     }

@@ -1,15 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using TestApp.fighter;
+﻿using TestApp.fighter;
 using TestApp.enums;
 using TestApp.notifier;
 
 namespace TestApp.visitor
 {
-    public class Doctor : IVisitor
+    public class Doctor : IDoctorVisitor
     {
 
         public event EventHandler<CustomEventArgs> FighterDied;
@@ -17,12 +12,23 @@ namespace TestApp.visitor
 
         public Doctor(Notifier notifier)
         {
+            if (notifier is null)
+            {
+                throw new ArgumentNullException(nameof(notifier));
+            }
+
             this.FighterDied += notifier.OnFighterDied;
             this.FighterHealed += notifier.OnFighterHealed;
         }
 
         public void Visit(Fighter fighter)
         {
+            //fighter ar putea fi null
+            if (fighter is null)
+            {
+                throw new ArgumentNullException(nameof(fighter));
+            }
+
             if (fighter.Health <= 0)
             {
                 fighter.Status = Status.DEAD;

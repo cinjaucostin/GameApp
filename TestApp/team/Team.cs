@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using TestApp.enums;
+﻿using TestApp.enums;
 using TestApp.fighter;
 
 namespace TestApp.team
@@ -13,6 +8,7 @@ namespace TestApp.team
         public List<Fighter> Fighters { get; set; }
         public string Name { get; set; }
 
+        // constructor inutil
         public Team()
         {
 
@@ -20,19 +16,19 @@ namespace TestApp.team
 
         public Team(string name)
         {
-            this.Name = name;
+            Name = name;
         }
 
-        public void addFighter(Fighter fighter)
+        public void AddFighter(Fighter fighter)
         {
-            if(this.Fighters == null)
+            if(Fighters == null)
             {
-                this.Fighters = new List<Fighter>();
+                Fighters = new List<Fighter>();
             }
-            this.Fighters.Add(fighter);
+            Fighters.Add(fighter);
         }
 
-        public void updateTeam()
+        public void UpdateTeam()
         {
             Fighters.RemoveAll(fighter => fighter.Status == Status.DEAD);
         }

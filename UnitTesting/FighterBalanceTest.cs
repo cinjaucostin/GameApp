@@ -17,7 +17,7 @@ namespace UnitTesting
             Notifier notifier = new Notifier();
             Arena arena = new Arena(notifier);
             Dictionary<string, Dictionary<string, double>> properties =
-                Helpers.loadCharactersProperties(Utils.FIGHTERS_PROPERTIES_FILE);
+                Helpers.LoadCharactersProperties(Utils.FIGHTERS_PROPERTIES_FILE);
             FighterFactory fighterFactory = new FighterFactory(properties, notifier);
             Doctor doctor = new Doctor(notifier);
 
@@ -28,7 +28,7 @@ namespace UnitTesting
 
             for (int i = 0; i < 10; i++)
             {
-                arena.fight(testFighter, testedFighter, doctor);
+                arena.Fight(testFighter, testedFighter, doctor);
 
                 if (testedFighter.Status == Status.ALIVE)
                 {
@@ -57,7 +57,7 @@ namespace UnitTesting
             Notifier notifier = new Notifier();
             Arena arena = new Arena(notifier);
             Dictionary<string, Dictionary<string, double>> properties =
-                Helpers.loadCharactersProperties(Utils.FIGHTERS_PROPERTIES_FILE);
+                Helpers.LoadCharactersProperties(Utils.FIGHTERS_PROPERTIES_FILE);
             FighterFactory fighterFactory = new FighterFactory(properties, notifier);
             Doctor doctor = new Doctor(notifier);
 
@@ -68,7 +68,7 @@ namespace UnitTesting
 
             for (int i = 0; i < 10; i++)
             {
-                arena.fight(testFighter, testedFighter, doctor);
+                arena.Fight(testFighter, testedFighter, doctor);
 
                 if (testedFighter.Status == Status.ALIVE)
                 {
@@ -97,7 +97,7 @@ namespace UnitTesting
             Notifier notifier = new Notifier();
             Arena arena = new Arena(notifier);
             Dictionary<string, Dictionary<string, double>> properties =
-                Helpers.loadCharactersProperties(Utils.FIGHTERS_PROPERTIES_FILE);
+                Helpers.LoadCharactersProperties(Utils.FIGHTERS_PROPERTIES_FILE);
             FighterFactory fighterFactory = new FighterFactory(properties, notifier);
             Doctor doctor = new Doctor(notifier);
 
@@ -108,7 +108,7 @@ namespace UnitTesting
 
             for (int i = 0; i < 10; i++)
             {
-                arena.fight(testFighter, testedFighter, doctor);
+                arena.Fight(testFighter, testedFighter, doctor);
 
                 if (testedFighter.Status == Status.ALIVE)
                 {

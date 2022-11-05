@@ -1,11 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using TestApp.fighter;
+﻿using TestApp.fighter;
 using TestApp.team;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace TestApp.notifier
 {
@@ -13,6 +7,15 @@ namespace TestApp.notifier
     {
         public void OnPunchedByAdverseFighter(object source, CustomEventArgs args)
         {
+            if (source is null)
+            {
+                throw new ArgumentNullException(nameof(source));
+            }
+            if (args is null)
+            {
+                throw new ArgumentNullException(nameof(args));
+            }
+
             Fighter adverseFighter = args.Fighter;
             int damage = args.Damage;
             Fighter fighter = (Fighter)source;
@@ -22,6 +25,15 @@ namespace TestApp.notifier
         }
         public void OnDodgedAdverseFighterHit(object source, CustomEventArgs args)
         {
+            if (source is null)
+            {
+                throw new ArgumentNullException(nameof(source));
+            }
+            if (args is null)
+            {
+                throw new ArgumentNullException(nameof(args));
+            }
+
             Fighter adverseFighter = args.Fighter;
             Fighter fighter = (Fighter)source;
             Console.WriteLine(fighter.GetType().Name + " from Team " + fighter.Team + " dodged the hit from "
@@ -29,6 +41,15 @@ namespace TestApp.notifier
         }
         public void OnCriticalDamageHit(object source, CustomEventArgs args)
         {
+            if (source is null)
+            {
+                throw new ArgumentNullException(nameof(source));
+            }
+            if (args is null)
+            {
+                throw new ArgumentNullException(nameof(args));
+            }
+
             Fighter fighter = (Fighter)source;
             int damage = args.Damage;
             Console.WriteLine("Critical damage bonus of "
@@ -39,6 +60,15 @@ namespace TestApp.notifier
 
         public void OnFighterDied(object source, CustomEventArgs args)
         {
+            if (source is null)
+            {
+                throw new ArgumentNullException(nameof(source));
+            }
+            if (args is null)
+            {
+                throw new ArgumentNullException(nameof(args));
+            }
+
             Fighter fighter = args.Fighter;
             Console.WriteLine("\t\t\t" + fighter.GetType().Name
                 + " from Team " + fighter.Team + " died.");
@@ -46,6 +76,15 @@ namespace TestApp.notifier
 
         public void OnFighterHealed(object source, CustomEventArgs args)
         {
+            if (source is null)
+            {
+                throw new ArgumentNullException(nameof(source));
+            }
+            if (args is null)
+            {
+                throw new ArgumentNullException(nameof(args));
+            }
+
             Fighter fighter = args.Fighter;
             int heal = args.Heal;
             Console.WriteLine("The Doctor healed " + fighter.GetType().Name + " from Team " + fighter.Team
@@ -54,6 +93,15 @@ namespace TestApp.notifier
 
         public void OnTeamWon(object source, CustomEventArgs args)
         {
+            if (source is null)
+            {
+                throw new ArgumentNullException(nameof(source));
+            }
+            if (args is null)
+            {
+                throw new ArgumentNullException(nameof(args));
+            }
+
             Team team = args.Team;
             Console.WriteLine("Team " + team.Name + " has won the game.");
             Console.WriteLine("Fighters alive:");
